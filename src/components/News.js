@@ -15,7 +15,7 @@ class News extends Component {
     }
 
     componentDidMount() {
-
+        
 
     }
 
