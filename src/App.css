@@ -1,10 +1,17 @@
-{
-  background-color: #222;
-  font-family: 'Antic', sans-serif;
-}
 
 body {
   font-family: 'Antic', sans-serif;
+}
+
+main {
+  background-color: #111;
+}
+
+h2 {
+  font-family: 'Antic', sans-serif;
+  text-transform: uppercase;
+  font-size: 12pt;
+  color: white;
 }
 
 .App-header {
@@ -35,7 +42,7 @@ ul.nav-link-box li {
 
 .nav-link-box {
   display: grid;
-  grid-template-columns: 33.3% 33.3% 33.3%;
+  grid-template-columns: repeat(3, 10em);
   grid-template-rows: 0%;
   list-style: none;
   height: 90px;
@@ -120,7 +127,7 @@ a.login:hover {
   background-color: #111;
   height: 75px;
   display: grid;
-  grid-template-columns: 15% 15% 15%;
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 50px;
   margin: 0 auto;
   max-height: 100px;
@@ -140,7 +147,7 @@ a.login:hover {
 
 .gg {
   height: 45px;
-  width: 320px;
+  width: 200px;
 }
 
 
@@ -169,7 +176,6 @@ float: right;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 300px;
 }
 
 .white-bottom {
@@ -180,4 +186,117 @@ float: right;
   height: 20px;
   width: 20px;
   vertical-align: middle;
+}
+
+
+
+
+
+
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(7, 7em);
+  grid-template-rows: min-content max-content;
+  grid-gap: 80px;
+  max-width: 1050px;
+  margin: 0 auto;
+  margin-top: 110px;
+}
+
+.one{
+  /*grid-column-start: 1;
+  grid-column-end: 3;*/
+  grid-column: 1 / 5;
+  background: white;
+}
+.two{
+  grid-column: 5 / 8;
+}
+
+.post-image {
+ width: 100%;
+}
+
+.post-text {
+  padding: 15px;
+}
+
+.post-video {
+  margin-bottom: 20px;  
+  margin-left: 35px;
+  align-self: center;
+}
+
+.post-title {
+  padding: 15px;
+  text-transform: uppercase;
+}
+
+.post-ending {
+  font-size: 12pt;
+  padding: 15px;
+  margin: 0;
+}
+
+.nested {
+  display: flex;
+  display: block;
+  align-content: center;
+  justify-content: center;
+}
+
+.follow-social {
+  margin-left: 15px;
+}
+
+.post-sidebar {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: repeat(2, minmax(150px, auto));
+  grid-row-gap: 50px;
+}
+
+.social-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: #222;
+}
+
+.social-sidebar div:nth-child(2) {
+  position: relative;
+  margin: 0;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+.footer-picture {
+  height: 100px;
+  width: 220px;
+}
+
+.footer-color {
+  background: black;
+}
+
+
+.form {
+  margin-top: 500px;
+  margin-bottom: 500px;
+  color: white;
+}
+
+.post-form {
+  display: grid;
+  grid-template-rows: repeat(4, auto);
 }

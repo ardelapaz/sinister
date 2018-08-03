@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
+import { Route, Link } from 'react-router-dom';
 import { Slide } from 'react-slideshow-image';
 import './App.css';
 import { Carousel } from 'react-materialize';
@@ -6,6 +8,11 @@ import Header from './components/Header';
 import Social from './components/Social';
 import Login from './components/Login';
 import Sponsor from './components/Sponsors';
+import Teams from './components/Teams';
+import Contact from './components/Contact';
+import News from './components/News';
+import { Footer } from 'react-materialize';
+import Template from './components/Template';
 
 const images = [
   '../images/sin2.png',
@@ -29,9 +36,14 @@ class App extends Component {
         </header>
           <main>
             <Sponsor/>
+            { /* <Route exact path="/" component = { } /> */ }
+            <Route path="/teams" component = { Teams } />
+            <Route path="/news" component = { News } />
+            <Route path="/contact_us" component = { Contact } />
             <div className = "news">
               
             </div>
+            <Template/>
          </main>
 
 
@@ -51,6 +63,20 @@ class App extends Component {
               <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
           */ }
+
+          <Footer copyrights="&copy 2015 Copyright Text"
+              links={
+               <ul>
+                 <li><a className="grey-text text-lighten-3" href="/">Home</a></li>
+                 <li><a className="grey-text text-lighten-3" href="/news">News</a></li>
+                 <li><a className="grey-text text-lighten-3" href="/team">Team</a></li>
+                 <li><a className="grey-text text-lighten-3" href="/contact">Contact Us</a></li>
+               </ul>
+             }
+             className='footer-color'
+              >
+                <img src="../images/teamsinister.png" className = "footer-picture"/>
+            </Footer>;
       </div>
     );
   }
