@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as firebase from 'firebase'
 import { Route, Link } from 'react-router-dom';
 import { Slide } from 'react-slideshow-image';
 import './App.css';
@@ -13,22 +12,8 @@ import Contact from './components/Contact';
 import News from './components/News';
 import { Footer } from 'react-materialize';
 import Template from './components/Template';
-
-const images = [
-  '../images/sin2.png',
-  '../images/sin2.png'
-];
-
-var config = {
-  apiKey: "AIzaSyB7cTk0oj7uW4U0qqZpI807Kc4K87dNjaw",
-  authDomain: "sinister-6aec6.firebaseapp.com",
-  databaseURL: "https://sinister-6aec6.firebaseio.com",
-  projectId: "sinister-6aec6",
-  storageBucket: "sinister-6aec6.appspot.com",
-  messagingSenderId: "334435003108"
-};
-firebase.initializeApp(config);
-
+import Post from './components/Post';
+import NewsList from './components/NewsList';
 
 class App extends Component {
 
@@ -44,15 +29,19 @@ class App extends Component {
            <Header />
         </header>
           <main>
+            { /* <div className ="hero">
+              <img src="../images/hero.jpg" className = "post-image" />
+    </div> */ }
             <Sponsor/>
+            <NewsList component = { Template } />
+
             { /* <Route exact path="/" component = { } /> */ }
             <Route path="/teams" component = { Teams } />
-            <Route path="/news" component = { News } />
+            <Route path="/news" component = { Template  } />
             <Route path="/contact_us" component = { Contact } />
             <div className = "news">
               
             </div>
-            <Template/>
          </main>
 
 

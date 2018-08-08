@@ -10,7 +10,9 @@ class Template extends Component {
             title: '',
             body: '',
             youtube: '',
-            public: false
+            public: false,
+            image: '',
+            posts: []
         };
 
         this.newsRef = firebase.database().ref('news');
@@ -18,9 +20,16 @@ class Template extends Component {
 
     }
 
+    componentDidMount() {
+        this.newsRef.on('child_added', snapshot => {
+            const post = snapshot.val();
+            post.key = snapshot.key;
+          this.setState({ posts: this.state.posts.concat( post ) });
+        });
+      }
+
     onTextChange(e) {
         const text = e.target.value;
-        console.log(e.target.value);
         switch (e.target.id) {
             case ("title"):
                 this.setState({ title: text });
@@ -32,22 +41,43 @@ class Template extends Component {
                 this.setState({ youtube: text });
                 break;
             case ("public"):
-                this.setState({ public: text });
+                this.setState({ public: e.target.checked });
+                break;
+            case ("input"): 
+                var selectedFile = document.getElementById('input').files[0];
+                var fileName = selectedFile.name;
+                this.setState({ image: fileName });
+                this.storageRef = firebase.storage().ref(fileName);
                 break;
         }
-
-        console.log(this);
     }
 
     createPost() {
-        console.log('test');
         this.newsRef.push({
-            title: this.props.title,
-            body: this.props.body,
-            public: this.props.public,
-            youtube: this.props.youtube,
-            image: this.props.image
+            title: this.state.title,
+            body: this.state.body,
+            public: this.state.public,
+            youtube: this.state.youtube,
+            image: this.state.image
         });
+
+        this.setState({
+            title: '',
+            body: '', 
+            youtube: '', 
+            image: '',
+            public: false
+        })
+        console.log(this.state.posts);
+        // display notification alerting that post was successful
+    }
+
+    onSubmit() {
+        var selectedFile = document.getElementById('input').files[0];
+        this.storageRef.put(selectedFile).then(function(snapshot) {
+            console.log('Uploaded a file!');
+        });
+        this.createPost();
     }
 
 
@@ -58,8 +88,9 @@ class Template extends Component {
                     <Input  s={12} label="Post Title" value={this.state.title} onChange={this.onTextChange.bind(this)} id="title" />
                     <Input type="textarea" s={12} label="Post Body" value = {this.state.body} onChange={this.onTextChange.bind(this)} id="body" />
                     <Input  s={12} label="YouTube Video Link" value = {this.state.youtube} onChange={this.onTextChange.bind(this)} id="youtube" />
-                    <Input name='public' type='checkbox' label='Make news post public?' onChange={this.onTextChange.bind(this)} id="public" />
-                    <Button onClick={console.log('test')}   >Submit</Button>
+                    <Input s = {10} name='public' type='checkbox' label='Make news post public?' onChange={this.onTextChange.bind(this)} id="public" />
+                    <Button s = {2} waves='light'  onClick={(e) => {  this.onSubmit() } } >Submit</Button>
+                    <Input s={12} type="file" id="input" onChange = {this.onTextChange.bind(this)} />
                 </Row>
             </div>
         );
