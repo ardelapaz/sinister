@@ -13,7 +13,7 @@ class News extends Component {
             post: ''
         };
         this.newsRef = firebase.database().ref('news');
-        this.createPost = this.createPost.bind(this);
+        this.setState({ posts: this.createPost = this.createPost.bind(this)});
     }
 
     componentDidMount() {

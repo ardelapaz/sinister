@@ -25,6 +25,7 @@ class Template extends Component {
             const post = snapshot.val();
             post.key = snapshot.key;
           this.setState({ posts: this.state.posts.concat( post ) });
+          this.props.parentMethod(post);
         });
       }
 
@@ -68,7 +69,6 @@ class Template extends Component {
             image: '',
             public: false
         })
-        console.log(this.state.posts);
         // display notification alerting that post was successful
     }
 

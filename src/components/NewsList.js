@@ -5,23 +5,6 @@ import firebase from '../firebase';
 class NewsList extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            posts: []
-        }
-
-        var query = firebase.database().ref("users").orderByKey();
-        query.once("value")
-        .then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-             // key will be "ada" the first time and "alan" the second time
-             var key = childSnapshot.key;
-      // childData will be the actual contents of the child
-             var childData = childSnapshot.val();
-             this.stats.posts.concat(childData);
-            });
-        });
-        console.log(this.state.posts);
     }
 
       imageUrl() {
@@ -38,7 +21,7 @@ class NewsList extends Component {
                         </div>
 
                          {
-                             this.state.posts.map((post, i) => {
+                             this.props.posts.map((post, i) => {
                                 <div className="list-1">
                                     <h1>post.title</h1>
                                 </div>
