@@ -14,6 +14,7 @@ class NewsList extends Component {
 
 
     render() {
+        console.log(this.props.posts);
         return (
                     <div className = "news-list">
                         <div className = "news-header">
@@ -21,9 +22,9 @@ class NewsList extends Component {
                         </div>
 
                          {
-                             this.props.posts.map((post, i) => {
+                             this.props.posts.map((post, index) => {
                                 <div className="list-1">
-                                    <h1>post.title</h1>
+                                    <h1>{post.title}</h1>
                                 </div>
                             })}
 

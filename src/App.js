@@ -27,10 +27,8 @@ class App extends Component {
   }
 
   newPost(post) {
-    if (!post) {
-      this.setState = ({ posts: this.state.posts.concat(post) });
-      console.log(this.state.posts);
-    console.log("above is the current state");
+    if (post) {
+      this.setState({ posts: this.state.posts.concat(post) });
     }
   }
 
@@ -50,7 +48,7 @@ class App extends Component {
     </div> */ }
             <Sponsor/>
             {/* <NewsList component = { Template } /> */}
-            <Template posts = { this.state.posts } parentMethod = { this.newPost } />
+            <Template posts = { this.state.posts } parentMethod = { this.newPost.bind(this) } />
             { /* <Route exact path="/" component = { } /> */ }
             <Route path="/teams" component = { Teams } />
             <Route path="/news" render={(props) => <NewsList {...props } posts = {this.state.posts} /> } />
