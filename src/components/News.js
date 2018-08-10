@@ -10,53 +10,36 @@ class News extends Component {
 
         this.state = {
             posts: [],
-            post: ''
+            newPosts: []
         };
         this.newsRef = firebase.database().ref('news');
-        this.setState({ posts: this.createPost = this.createPost.bind(this)});
     }
 
     componentDidMount() {
-        
-
-    }
-
-    createPost() {
-        this.newsRef.push({
-            title: this.props.title,
-            body: this.props.body,
-            public: this.props.public,
-            youtube: this.props.youtube,
-            image: this.props.image
+        this.newsRef.on('child_added', snapshot => {
+            const post = snapshot.val();
+            this.setState({ posts: this.state.posts.concat (post) });
+            var recentPosts = this.state.posts.slice((this.state.posts.length - 5));
+            this.setState({ newPosts: this.state.newPosts.concat(recentPosts)});
         });
-    }
-
-    routeToPost() {
-        console.log('test');
-    }
+      }
 
     //rename this featured news
     render() {
         return (
             <div className = "news">
-            <div className = "news-header">
-                <h1 className = "news-header-text">Latest News</h1>
-            </div>
-            <div className="onee">
-                <img className = 'post-image1' src='' onClick = {this.routeToPost}/>
-            </div>
-            <div className="twoo">
-                <img className = 'post-image1' src='../images/vein.png' onClick = {this.routeToPost}/>
-            </div>
-            <div className="three">
-                <img className = 'post-image1' src='../images/vein.png' onClick = {this.routeToPost}/>>
-            </div>
-            <div className="four">
-                <img className = 'post-image1' src='../images/vein.png' onClick = {this.routeToPost}/>
-            </div>
-            <div className ="five">
-             <img className = 'post-image1' src='../images/vein.png' onClick = {this.routeToPost}/>
-            </div>
+                <div className = "latest-news">
+                    <h1 className = "news-header-text">Latest News</h1>
+                </div>
+
+            {
+                             this.state.newPosts.map((post, id) => {
+                                console.log(post.snapshot);
+                                return (
+                                    <div className = {"a" + id}>
+                                        <img className = 'post-image1' src={post.image} onClick = {this.routeToPost}/>
+                                    </div>
+                                 )})}
         </div>
 
         );

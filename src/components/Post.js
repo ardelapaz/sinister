@@ -19,9 +19,9 @@ class Post extends Component {
             <div className = "content">
                 <div class="one">
                     <div className = "nested">
-                    <img className = 'post-image' src='../images/vein.png'/>
-                    <h1 className = "post-title"> Welcome Yoggah to SiNister!</h1>
-                    <p className = "post-text">I don't think anybody knows it was Russia that wrote Lorem Ipsum, but I don't know, maybe it was. It could be Russia, but it could also be China. It could also be lots of other people. It also could be some wordsmith sitting on their bed that weights 400 pounds. Ok? That other text? Sadly, it’s no longer a 10. Look at these words. Are they small words? And he referred to my words - if they're small, something else must be small. I guarantee you there's no problem, I guarantee.
+                        <img className = 'post-image' src='../images/vein.png'/>
+                        <h1 className = "post-title"> Welcome Yoggah to SiNister!</h1>
+                        <p className = "post-text">I don't think anybody knows it was Russia that wrote Lorem Ipsum, but I don't know, maybe it was. It could be Russia, but it could also be China. It could also be lots of other people. It also could be some wordsmith sitting on their bed that weights 400 pounds. Ok? That other text? Sadly, it’s no longer a 10. Look at these words. Are they small words? And he referred to my words - if they're small, something else must be small. I guarantee you there's no problem, I guarantee.
 
 The best taco bowls are made in Trump Tower Grill. I love Hispanics! All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected.
 

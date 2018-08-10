@@ -11,23 +11,14 @@ class Template extends Component {
             body: '',
             youtube: '',
             public: false,
-            image: '',
-            posts: []
+            image: ''
         };
 
         this.newsRef = firebase.database().ref('news');
         this.createPost = this.createPost.bind(this);
+        this.storage = firebase.storage().ref();
 
     }
-
-    componentDidMount() {
-        this.newsRef.on('child_added', snapshot => {
-            const post = snapshot.val();
-            post.key = snapshot.key;
-          this.setState({ posts: this.state.posts.concat( post ) });
-          this.props.parentMethod(post);
-        });
-      }
 
     onTextChange(e) {
         const text = e.target.value;
@@ -53,13 +44,15 @@ class Template extends Component {
         }
     }
 
-    createPost() {
+    createPost(url) {
+        console.log(url);
         this.newsRef.push({
             title: this.state.title,
             body: this.state.body,
             public: this.state.public,
             youtube: this.state.youtube,
-            image: this.state.image
+            image: url,
+            createdAt: firebase.database.ServerValue.TIMESTAMP
         });
 
         this.setState({
@@ -74,10 +67,13 @@ class Template extends Component {
 
     onSubmit() {
         var selectedFile = document.getElementById('input').files[0];
-        this.storageRef.put(selectedFile).then(function(snapshot) {
+        const that = this;
+        this.storageRef.put(selectedFile).then((snapshot) => {
             console.log('Uploaded a file!');
+            that.storage.child(snapshot.metadata.name).getDownloadURL().then((url) => {
+                that.createPost(url);
+            });
         });
-        this.createPost();
     }
 
 

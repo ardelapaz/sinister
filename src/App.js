@@ -14,6 +14,7 @@ import { Footer } from 'react-materialize';
 import Template from './components/Template';
 import Post from './components/Post';
 import NewsList from './components/NewsList';
+import Landing from './components/Landing';
 
 class App extends Component {
 
@@ -47,10 +48,8 @@ class App extends Component {
               <img src="../images/hero.jpg" className = "post-image" />
     </div> */ }
             <Sponsor/>
-            {/* <NewsList component = { Template } /> */}
-            <Template posts = { this.state.posts } parentMethod = { this.newPost.bind(this) } />
-            { /* <Route exact path="/" component = { } /> */ }
-            <Route path="/teams" component = { Teams } />
+            <Route exact path="/" component = { Landing } />
+            <Route path="/teams" component = { Template } />
             <Route path="/news" render={(props) => <NewsList {...props } posts = {this.state.posts} /> } />
             <Route path="/contact_us" component = { Contact } />
             <div className = "news">
