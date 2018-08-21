@@ -7,11 +7,12 @@ class CreateTeam extends Component {
         super(props);
 
         this.state = {
-            players: ["player1"], 
-            length: 1
+            players: [], 
+            length: 1,
+            teamName: ''
         };
 
-        this.newsRef = firebase.database().ref('news');
+        this.newsRef = firebase.database().ref('teams');
         this.createPost = this.createPost.bind(this);
         this.storage = firebase.storage().ref();
 
@@ -19,20 +20,14 @@ class CreateTeam extends Component {
 
     onTextChange(e) {
         const text = e.target.value;
-        switch (e.target.id) {
-            case ("name"):
-                this.setState({ title: text });
-                break;
-            case ("role"):
-                this.setState({ body: text });
-                break;
-            case ("picture"): 
-                var selectedFile = document.getElementById('picture').files[0];
+        if (text == "picture") {
+            var selectedFile = document.getElementById('picture').files[0];
                 var fileName = selectedFile.name;
                 this.setState({ image: fileName });
                 this.storageRef = firebase.storage().ref(fileName);
-                break;
         }
+        this.setState({ [e.target.id]: e.target.value });
+
     }
 
     createPost(url) {
@@ -67,7 +62,7 @@ class CreateTeam extends Component {
     }
 
     addPlayers() {
-        var newPlayer = "";
+        var newPlayer = "player" + this.state.length;
         this.setState({ players: this.state.players.concat(newPlayer), length: (this.state.length+1) });
     }
     
@@ -76,17 +71,21 @@ class CreateTeam extends Component {
     }
 
     render() {
+        console.log(this.state.players);
+        console.log(this.state.players[0]);
         return (
             <div className = "post-form">
                 <Row className = "form"  >
                     <h2>{this.state.players.length}</h2>
+                    <Input  s={12} label="Team name" value={this.state.teamName} onChange={this.onTextChange.bind(this)} id="teamName" />
                     <Button floating large className='red' waves='light' icon='add' onClick = {this.addPlayers.bind(this)} /> Add or remove players
                     <Button floating large className='red' waves='light' icon='remove' onClick = {this.removePlayers.bind(this)} />
-                    { this.state.players.map((player) => {
+                    { this.state.players.map((player, id) => {
+                        console.log(id);
                         return(
                             <div>
-                                <Input  s={12} label="Player name" value={this.state.title} onChange={this.onTextChange.bind(this)} id="name" />
-                                <Input  s={12} label="Role" value={this.state.title} onChange={this.onTextChange.bind(this)} id="role" />
+                                <Input  s={12} label="Player name" value={this.state.players[id].name} onChange={this.onTextChange.bind(this)} id={this.state.players[id].name} />
+                                <Input  s={12} label="Role" value={this.state.players[id].role} onChange={this.onTextChange.bind(this)} id="role" />
                                 <Input s={12} type="file" id="picture" onChange = {this.onTextChange.bind(this)} />
                             </div>
                         )
