@@ -1,4 +1,8 @@
 
+.App {
+ background-color: #111; 
+}
+
 body {
   font-family: 'Antic', sans-serif;
 }
@@ -9,6 +13,7 @@ h1 {
 
 main {
   background-color: #111;
+  min-height: 100vh;
 }
 
 h2 {
@@ -143,6 +148,7 @@ a.login:hover {
   max-height: 100px;
   justify-content: center;
   align-items: center;
+  margin-bottom: 100px;
 }
 
 .zowie {
@@ -304,8 +310,6 @@ float: right;
 
 
 .form {
-  margin-top: 500px;
-  margin-bottom: 500px;
   color: white;
 }
 
@@ -337,7 +341,8 @@ float: right;
   grid-auto-rows: minmax(100px, auto);
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 300px;
+  margin-top: 110px;
+  margin-bottom: 110px;
   grid-gap: 5px;
 }
 .a0 {
@@ -375,7 +380,6 @@ float: right;
   color: #FFFFFF;
   font-weight: bold;
   letter-spacing: 3px;
-
 }
 
 .news-list {
@@ -412,7 +416,7 @@ float: right;
   text-transform: uppercase;
   
 }
-#read-more {
+.read-more {
   color: red !important;
   font-size: 10pt;
   float: right;
@@ -422,4 +426,128 @@ float: right;
 
 .card-stacked p:hover {
 color: red;
+}
+
+.team-div{
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+.team {
+  margin: 0 auto;
+  height: 300px;
+  width: 1000px;
+}
+
+.team-imgr6 {
+  height: 100%;
+  width: 100%;
+}
+.sin-team-imgr6 {
+  position: absolute;
+  opacity: .3;
+  height: 300px !important;
+  width: 1000px !important;
+}
+
+.sin-team-imgr6:hover {
+  opacity: 1;
+}
+
+.team-header {
+  margin-bottom: 50px;
+}
+
+.teams-header {
+  height: 40px;
+  font-family: 'Antic', sans-serif;
+  text-transform: uppercase;
+  font-size: 18pt;
+  color: #FFFFFF;
+  font-weight: bold;
+  letter-spacing: 3px;
+  border-bottom: 1px solid #FFFFFF; 
+}
+
+
+.player-card {
+  display: grid;
+  grid-template-columns: 250px 2fr;
+  height: 300px;
+  margin-bottom: 15px;
+  background-color: black;
+}
+
+.player-info {
+height: 100%;
+}
+
+.team-card-name {
+  display: inline-block;
+  font-family: 'Antic', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  font-size: 24pt;
+  margin-top: 30px;
+  border-bottom: 4px solid transparent;
+}
+
+.team-card-name:hover {
+  border-bottom: 4px solid red;
+}
+
+.team-card-role {
+  font-family: 'Antic', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  font-size: 12pt;
+  margin: 0;
+}
+
+.player-image {
+  height: 100%;
+}
+
+
+
+
+
+
+
+.contact {
+  max-width: 960px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.centered {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#login {
+  margin: auto !important;
+  width: 100%;
+  
+}
+
+.login {
+  text-align: center;
+  color: white;
+}
+.row {
+  color: white;
+}
+
+.dashboard {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#footer {
+  margin-top: 200px;
+}
+
+.btn {
+  margin-top: 30px;
 }

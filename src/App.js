@@ -11,71 +11,49 @@ import Teams from './components/Teams';
 import Contact from './components/Contact';
 import News from './components/News';
 import { Footer } from 'react-materialize';
-import Template from './components/Template';
+import Create from './components/Create';
 import Post from './components/Post';
 import NewsList from './components/NewsList';
 import Landing from './components/Landing';
+import Team from './components/Team';
+import Admin from './components/Admin';
+import Logout from './components/Logout';
+import Dashboard from './components/Dashboard';
+import * as firebase from 'firebase';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      posts: [],
-      users: []
-    }
   }
 
-  newPost(post) {
-    if (post) {
-      this.setState({ posts: this.state.posts.concat(post) });
-    }
-  }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <div className = "header">
-            <Social/>
-            <Login/>
-          </div>
-           <Header />
         </header>
           <main>
-            { /* <div className ="hero">
-              <img src="../images/hero.jpg" className = "post-image" />
-    </div> */ }
-            <Sponsor/>
-            <Route exact path="/" component = { Landing } />
-            <Route path="/teams" component = { Template } />
-            <Route path="/news" render={(props) => <NewsList {...props } posts = {this.state.posts} /> } />
-            <Route path="/contact_us" component = { Contact } />
-            <div className = "news">
-              
-            </div>
+            <Route path="/" render={props =>
+            <div>
+              <div className = "header">
+                <Social />
+                <Logout />
+              </div>
+              <Header />
+              <Sponsor />
+            </div>} />
+            <Route exact path = "/" component = { Landing } />
+            <Route exact path="/teams" component = { Teams } />
+            <Route exact path="/news" component = { NewsList } />
+            <Route path="/contact" component = { Contact } />
+            <Route path="/news/:id" component = { Post } />
+            <Route path="/teams/:id" component = { Team } />
+            <Route exact path = "/login" component = { Admin } />
          </main>
 
 
-          { /* <Slide images = {images} className = "slide-images page-center"/>
-            <Carousel images={[
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>,
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>,
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>,
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>,
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>,
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-            ]} />
-
-            <div className = "twitter">
-              <a className="twitter-timeline" data-width="800" data-height="600" data-theme="dark" data-link-color="#d60000" href="https://twitter.com/TeamSiNisterGG?ref_src=twsrc%5Etfw">Tweets by TeamSiNisterGG</a>
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/oaDDXCmZE8w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-          */ }
-
-          <Footer copyrights="&copy 2015 Copyright Text"
+          <Footer  id = "footer" copyrights="&copy 2015 Copyright Text"
               links={
                <ul>
                  <li><a className="grey-text text-lighten-3" href="/">Home</a></li>
@@ -87,7 +65,7 @@ class App extends Component {
              className='footer-color'
               >
                 <img src="../images/teamsinister.png" className = "footer-picture"/>
-            </Footer>;
+            </Footer>
       </div>
     );
   }

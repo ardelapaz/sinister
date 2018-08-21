@@ -3,6 +3,8 @@ import News from '../components/News';
 import firebase from '../firebase';
 import Social from '../components/Social'
 import { Col, Card, CardTitle } from 'react-materialize';
+import {Link} from 'react-router-dom';
+
 
 class NewsList extends Component {
     constructor(props) {
@@ -20,19 +22,13 @@ class NewsList extends Component {
     componentDidMount() {
         this.newsRef.on('child_added', snapshot => {
             const post = snapshot.val();
+            post.key = snapshot.key;
             this.setState({ posts: this.state.posts.concat (post) });
         });
       }
 
-      formatTime(time) {
-        const formatted = new Date(time);
-        const newTime = String(formatted);
-        return newTime;
-    }
-
 
     render() {
-        console.log(this.state.posts);
         return (
                     <div className = "news-list">
                         <div className = "news-list-posts">
@@ -41,10 +37,10 @@ class NewsList extends Component {
                         <div className = "posts">
                          {
                              this.state.posts.map((post, id) => {
-                                 console.log(id);
+                                 console.log(post.key);
                                  return (
                                     <Col m={7} s={12} class = "dark gray">
-                                    <Card horizontal header={<CardTitle image={post.image}></CardTitle>} actions={[<a id = 'read-more' href='#'  >Read More</a>]}>
+                                    <Card horizontal header={<CardTitle image={post.image}></CardTitle>} actions={[<Link to = {'/news/' + post.key} className = "read-more">Read More</Link>]}>
                                         <a href='#'>
                                             <p>{post.title}</p>
                                         </a>

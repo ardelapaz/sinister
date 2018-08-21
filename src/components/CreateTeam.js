@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { Row, Input, Button } from 'react-materialize';
 
-class Template extends Component {
+class CreateTeam extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            title: '',
-            body: '',
-            youtube: '',
-            public: false,
-            image: ''
+            players: ["player1"], 
+            length: 1
         };
 
         this.newsRef = firebase.database().ref('news');
@@ -23,20 +20,14 @@ class Template extends Component {
     onTextChange(e) {
         const text = e.target.value;
         switch (e.target.id) {
-            case ("title"):
+            case ("name"):
                 this.setState({ title: text });
                 break;
-            case ("body"):
+            case ("role"):
                 this.setState({ body: text });
                 break;
-            case ("youtube"):
-                this.setState({ youtube: text });
-                break;
-            case ("public"):
-                this.setState({ public: e.target.checked });
-                break;
-            case ("input"): 
-                var selectedFile = document.getElementById('input').files[0];
+            case ("picture"): 
+                var selectedFile = document.getElementById('picture').files[0];
                 var fileName = selectedFile.name;
                 this.setState({ image: fileName });
                 this.storageRef = firebase.storage().ref(fileName);
@@ -45,7 +36,6 @@ class Template extends Component {
     }
 
     createPost(url) {
-        console.log(url);
         this.newsRef.push({
             title: this.state.title,
             body: this.state.body,
@@ -76,21 +66,37 @@ class Template extends Component {
         });
     }
 
+    addPlayers() {
+        var newPlayer = "";
+        this.setState({ players: this.state.players.concat(newPlayer), length: (this.state.length+1) });
+    }
+    
+    removePlayers() {
+        this.setState({ players: this.state.players.pop(), length: (this.state.length-1) });
+    }
 
     render() {
         return (
             <div className = "post-form">
                 <Row className = "form"  >
-                    <Input  s={12} label="Post Title" value={this.state.title} onChange={this.onTextChange.bind(this)} id="title" />
-                    <Input type="textarea" s={12} label="Post Body" value = {this.state.body} onChange={this.onTextChange.bind(this)} id="body" />
-                    <Input  s={12} label="YouTube Video Link" value = {this.state.youtube} onChange={this.onTextChange.bind(this)} id="youtube" />
-                    <Input s = {10} name='public' type='checkbox' label='Make news post public?' onChange={this.onTextChange.bind(this)} id="public" />
+                    <h2>{this.state.players.length}</h2>
+                    <Button floating large className='red' waves='light' icon='add' onClick = {this.addPlayers.bind(this)} /> Add or remove players
+                    <Button floating large className='red' waves='light' icon='remove' onClick = {this.removePlayers.bind(this)} />
+                    { this.state.players.map((player) => {
+                        return(
+                            <div>
+                                <Input  s={12} label="Player name" value={this.state.title} onChange={this.onTextChange.bind(this)} id="name" />
+                                <Input  s={12} label="Role" value={this.state.title} onChange={this.onTextChange.bind(this)} id="role" />
+                                <Input s={12} type="file" id="picture" onChange = {this.onTextChange.bind(this)} />
+                            </div>
+                        )
+                    })
+                    }
                     <Button s = {2} waves='light'  onClick={(e) => {  this.onSubmit() } } >Submit</Button>
-                    <Input s={12} type="file" id="input" onChange = {this.onTextChange.bind(this)} />
                 </Row>
             </div>
         );
     }
 }
 
-export default Template;
+export default CreateTeam;
