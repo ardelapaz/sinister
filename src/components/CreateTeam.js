@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { Row, Input, Button } from 'react-materialize';
 import update from 'immutability-helper';
+import PlayerForm from './PlayerForm';
 
 class CreateTeam extends Component {
     constructor(props) {
@@ -20,31 +21,9 @@ class CreateTeam extends Component {
     }
 
     onTextChange(e) {
-        const className = e.target.className;
         const value = e.target.value;
-        const id = e.target.id;
-        const type = e.target.type;
-
         
-        const player = this.state.players[id];
-            if(player) {
-                switch(className) {
-                    case("name" + id):
-                        player.name = value;
-                        this.forceUpdate();
-                    break;
-                    case("role" + id):
-                        player.role = value;
-                        this.forceUpdate();
-                    break;
-                }
-            }
-        if (type == 'file') {
-            var selectedFile = document.getElementsByClassName("image" + id).files[0];
-            var fileName = selectedFile.name;
-            player.image = fileName;
-            this.storageRef = firebase.storage().ref(fileName);
-        }
+        this.setState({ teamName: value });
     }
 
     matchingId(id) {
@@ -73,7 +52,7 @@ class CreateTeam extends Component {
     onSubmit() {
         this.state.players.map((player, id) => {
             var counter = 0;
-            var selectedFile = document.getElementById(player).files[counter];
+            var selectedFile = player.image;
             const that = this;
             this.storageRef.put(selectedFile).then((snapshot) => {
                 console.log('Uploaded a file!');
@@ -97,6 +76,11 @@ class CreateTeam extends Component {
         this.setState({ players: this.state.players.pop(), length: (this.state.length-1) });
     }
 
+    renderPlayers() {
+        for(var i = 0; i < this.state.players.length; i++) {
+            return <PlayerForm />
+        }
+    }
     render() {
         return (
             <div className = "post-form">
@@ -105,16 +89,7 @@ class CreateTeam extends Component {
                     <Input  s={12} label="Team name" value={this.state.teamName} onChange={this.onTextChange.bind(this)} id="teamName" />
                     <Button floating large className='red' waves='light' icon='add' onClick = {this.addPlayers.bind(this)} /> Add or remove players
                     <Button floating large className='red' waves='light' icon='remove' onClick = {this.removePlayers.bind(this)} />
-                    { this.state.players.map((player, id) => {
-                        return(
-                            <div>
-                                <Input  s={12} label="Player name" value={this.state.players[id].name} onChange={this.onTextChange.bind(this)} className={"name" + player.id} id={player.id} />
-                                <Input  s={12} label="Role" value={this.state.players[id].role} onChange={this.onTextChange.bind(this)} className={"role" + player.id} id={player.id} />
-                                <Input  s={12} type="file" className={"image" + player.id} id={player.id} onChange = {this.onTextChange.bind(this)} />
-                            </div>
-                        )
-                    })
-                    }
+                    {this.renderPlayers()}
                     <Button s = {2} waves='light'  onClick={(e) => {  this.onSubmit() } } >Submit</Button>
                 </Row>
             </div>
