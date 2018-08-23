@@ -32,7 +32,6 @@ componentDidMount() {
 
 
     render() {
-        console.log(this.state.user);
         let render;
         if (this.state.user != null) {
          render = <Dashboard /> 
