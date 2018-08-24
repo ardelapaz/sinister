@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import { Row, Input, Button } from 'react-materialize';
+import TeamForm from '../components/TeamForm';
+import { Form, FormGroup, Col, ControlLabel, FormControl, Button, HelpBlock} from 'react-bootstrap';
 import PlayerForm from '../components/PlayerForm';
 
 class CreateTeam extends Component {
@@ -10,12 +11,13 @@ class CreateTeam extends Component {
         this.state = {
             players: [], 
             teamName: '',
-            team: '',
+            team: null,
             showForm: false
         };
 
         this.teamsRef = firebase.database().ref('teams');
         this.storage = firebase.storage().ref();
+        this.handleChange = this.handleChange.bind(this);
 
     }
 
@@ -49,19 +51,25 @@ class CreateTeam extends Component {
     }
 
     render() {
-        let render;
-        if (this.state.showForm) {
-            render = <PlayerForm key = {this.state.team.key}/>
+        // let player;
+        // if (this.state.showForm) {
+        //     player = <PlayerForm key = {this.state.team.key}/>
+        // }
+        let teamName;
+        if (this.state.team != null) {
+            teamName = <TeamForm />
         }
         return (
             <div className = "post-form">
-                <Row className = "form"  >
+                {teamName}
+
+                {/* <Row className = "form"  >
                     <h2>{this.state.players.length}</h2>
                     <Input  s={8} label="Team name" value={this.state.teamName} onChange={this.handleChange.bind(this)} onSubmit = {this.handleSubmit.bind(this)} id="teamName" />
                     <Button s = {5} class = "btn waves-effect waves-light"  onClick={(e) => {  this.handleSubmit() } } >Submit</Button>
                     {render}
                     <Button floating large className='red' waves='light' icon='add' onClick = {this.addPlayers.bind(this)} /> Add or remove player
-                    <Button floating large className='red' waves='light' icon='remove' onClick = {this.removePlayers.bind(this)} />                </Row>
+                    <Button floating large className='red' waves='light' icon='remove' onClick = {this.removePlayers.bind(this)} />                </Row> */}
             </div>
         );
     }

@@ -9,7 +9,7 @@ class Dashboard extends Component {
             <div className = "dashboard">
                 <Collapsible popout defaultActiveKey={2}>
                   <CollapsibleItem header='Create a new news post' icon='whatshot'>
-                        <Create/>
+                        {/* <Create/> */}
                   </CollapsibleItem>
                   <CollapsibleItem header='Create a new team' icon='whatshot'>
                         <CreateTeam />
