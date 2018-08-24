@@ -10,7 +10,7 @@ class CreateTeam extends Component {
 
         this.state = {
             players: [], 
-            teamName: '',
+            teamKey: '',
             team: null,
             showForm: false
         };
@@ -19,14 +19,6 @@ class CreateTeam extends Component {
         this.storage = firebase.storage().ref();
         this.handleChange = this.handleChange.bind(this);
 
-    }
-
-    componentDidMount() {
-        this.teamsRef.on('value', snapshot => {
-            const team = snapshot.val();
-            team.key = snapshot.key;
-            this.setState({ team: team });
-        });
     }
 
     handleChange(e) {
@@ -51,17 +43,20 @@ class CreateTeam extends Component {
     }
 
     render() {
+        console.log(this.state.team);
         // let player;
         // if (this.state.showForm) {
         //     player = <PlayerForm key = {this.state.team.key}/>
         // }
         let teamName;
-        if (this.state.team != null) {
+        if (this.state.team == null) {
             teamName = <TeamForm />
         }
+        // let playerForm = <PlayerForm />
         return (
             <div className = "post-form">
                 {teamName}
+                {/* {playerForm} */}
 
                 {/* <Row className = "form"  >
                     <h2>{this.state.players.length}</h2>

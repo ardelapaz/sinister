@@ -1,22 +1,39 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Col, ControlLabel, FormControl, Button, HelpBlock} from 'react-bootstrap';
 import * as firebase from 'firebase';
+import PlayerForm from '../components/PlayerForm';
 
 class TeamForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            teams: [],
             teamName: '',
             readOnly: '',
             submitted: false,
-            newTeamKey: ''
+            newTeamKey: '',
+            selectedTeam: ''
         }
         this.teamsRef = firebase.database().ref('teams');
         this.teams = firebase.database().ref();
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        this.selectedTeam = this.selectedTeam.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.state.submitted === false) {
+            this.teamsRef.on('child_added', snapshot => {
+                this.setState({newTeamKey: snapshot.key });
+            });
+        }
+        this.teamsRef.on('child_added', snapshot => {
+            const team = snapshot.val();
+            team.key = snapshot.key;
+            this.setState({ teams: this.state.teams.concat (team) });
+        });
     }
 
     handleChange(e) {
@@ -32,17 +49,12 @@ class TeamForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const newTeamKey = this.teams.child('teams').push().key;
         if (this.state.submitted == false) {
-            console.log('testing');
             this.teamsRef.push({
                 teamName: this.state.teamName
             });
-            this.setState({ readOnly: 'readOnly', submitted: true, newTeamKey: newTeamKey });
-        } else if (this.state.newTeamKey != '') {
-            console.log('teams/' + this.state.newTeamKey);
-            // var editTeam = firebase.database().ref('teams/' + this.state.newTeamKey);
-            // editTeam.update({ teamName: this.state.teamName });
+            this.setState({ readOnly: 'readOnly', submitted: true });
+        } else {
             this.teamsRef.child(this.state.newTeamKey).update({ teamName: this.state.teamName });
             this.setState({ readOnly: 'readOnly' });
         }
@@ -53,7 +65,22 @@ class TeamForm extends Component {
         this.setState({ readOnly: '' });
     }
 
+    selectedTeam(e) {
+        this.setState({ selectedTeam: e.target.value });
+    }
+
+    returnTeamKey() {
+        return this.state.newTeamKey
+    }
+
     render() {
+        let player;
+        if (this.state.submitted === true) {
+            console.log(this.state.newTeamKey);
+            const key = this.state.newTeamKey;
+            player = <PlayerForm key = {this.returnTeamKey.bind(this)} />
+        }
+        console.log(this.state.selectedTeam);
         let button;
         if (this.state.readOnly === '') {
             button = <FormGroup>
@@ -68,24 +95,41 @@ class TeamForm extends Component {
             </Col>
             </FormGroup>
         }
+        let team;
+        if(this.state.selectedTeam == "other") {
+            team = <FormGroup
+            controlId="formBasicText"
+            validationState={this.getValidationState()}
+          >
+            <ControlLabel>Create a new team</ControlLabel>
+            <FormControl
+              type="text"
+              readOnly = {this.state.readOnly}
+              value={this.state.teamName}
+              placeholder="Enter team name"
+              onChange={this.handleChange}
+            />
+            <FormControl.Feedback />
+            <HelpBlock>Team name must be longer than 5 characters</HelpBlock>
+            {button}
+            {player}
+          </FormGroup>
+        }
         return (
             <form>
-                 <FormGroup
-                   controlId="formBasicText"
-                   validationState={this.getValidationState()}
-                 >
-                   <ControlLabel>Create a new team</ControlLabel>
-                   <FormControl
-                     type="text"
-                     readOnly = {this.state.readOnly}
-                     value={this.state.teamName}
-                     placeholder="Enter team name"
-                     onChange={this.handleChange}
-                   />
-                   <FormControl.Feedback />
-                   <HelpBlock>Team name must be longer than 5 characters</HelpBlock>
-                   {button}
+                <FormGroup controlId="formControlsSelect">
+                     <ControlLabel>Select a team</ControlLabel>
+                     <FormControl componentClass="select" placeholder="Select a team" onChange = {this.selectedTeam} defaultValue="Select a team">
+                     <option value="Select a team">--</option>
+                     {this.state.teams.map((team) => {
+                         return(
+                            <option value={team.teamName}>{team.teamName}</option>
+                         )
+                     })}
+                      <option value="other">Create a New Team</option>
+                    </FormControl>
                  </FormGroup>
+                 {team}
                 </form> 
         )
     }
