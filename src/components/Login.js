@@ -12,9 +12,31 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
+            user: null
         }
+
         this.handleChange = this.handleChange.bind(this);
-    }
+        this.authListener = this.authListener.bind(this);
+}
+
+
+componentDidMount() {
+    this.authListener();
+}
+componentWillUnmount() {
+    this.authListener();
+}
+
+  authListener() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      console.log(user);
+      if (user) {
+        this.setState({ user: user });
+      } else {
+        this.setState({ user: null });
+      }
+    }.bind(this));
+  }
 
     handleChange(e) {
         console.log(this.state.email);
@@ -33,7 +55,8 @@ class Login extends Component {
 
 
     render() {
-        return (
+        return this.state.user ? (
+        <Button href = "/dashboard">Click me</Button>) : (
             <div className = "centered" id="login">
                 <h1 className = "login">Log In</h1>
                 <Form horizontal>

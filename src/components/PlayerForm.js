@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { Form, FormGroup, Col, ControlLabel, FormControl, Button, HelpBlock } from 'react-bootstrap';
-
+import Team from '../components/Team';
 
 class PlayerForm extends Component {
 
@@ -11,7 +11,9 @@ class PlayerForm extends Component {
         this.state = {
             name: '',
             role: '',
-            image: ''
+            image: '',
+            newPlayer: '',
+            players: []
         }
 
         this.storage = firebase.storage().ref();
@@ -20,6 +22,7 @@ class PlayerForm extends Component {
         this.createTeam = this.createTeam.bind(this);
     }
 
+
     handleChange(e) {
         const value = e.target.value;
         const id = e.target.id;
@@ -27,7 +30,7 @@ class PlayerForm extends Component {
         console.log(id);
 
         if (type == 'file') {
-            var selectedFile = document.getElementById("file").files[0];
+            var selectedFile = document.getElementById("player_file").files[0];
                 var fileName = selectedFile.name;
                 this.setState({ image: fileName });
                 this.storageRef = firebase.storage().ref(fileName);
@@ -36,8 +39,9 @@ class PlayerForm extends Component {
         }
     }
     
-    onSubmit() {
-        var selectedFile = document.getElementById("file").files[0];
+    onSubmit(e) {
+        e.preventDefault();
+        var selectedFile = document.getElementById("player_file").files[0];
         const that = this;
         this.storageRef.put(selectedFile).then((snapshot) => {
             console.log('Uploaded a file!');
@@ -47,18 +51,31 @@ class PlayerForm extends Component {
         });
     }
 
-    createTeam() {
-        this.playerRef = firebase.database().ref('teams/' + this.props.key());
+    createTeam(url) {
+        const that = this;
+        this.playerRef = firebase.database().ref('teams/' + this.props.key1);
         this.playerRef.push({
             name: this.state.name,
             role: this.state.role,
-            image: this.state.image
-        })
+            image: url
+        }).then(() => {
+            this.playerRef.on('child_added', snapshot => {
+                const player = snapshot.val();
+                if(player.name) {
+                    that.setState({ players: that.state.players.concat(player), newPlayer: player });
+                }
+            })
+            this.setState({ name: '', role: '', image: '' });
+        });
     }
 
     
     render() {
-        console.log(this.props.key);
+        let players;
+        if(this.state.newPlayer) {
+            console.log('players is initiated');
+            players = <Team player = {this.props.key1} />
+        }
         return (
             <div>
                 <form>
@@ -79,20 +96,19 @@ class PlayerForm extends Component {
                      id = "role"
                    />
                    <FormControl
-                   id="file"
+                   id="player_file"
                    type="file"
                    label="File"
                    help="Example block-level help text here."
                    onChange={this.handleChange}
                  />
                    <FormGroup>
-                        <Col smOffset={2} sm={10}>
-                            <Button type="submit" onClick={this.createTeam }>Create Player</Button>
+                        <Col>
+                            <Button type="submit" onClick={this.onSubmit.bind(this)}>Create Player</Button>
                         </Col>
                     </FormGroup>
                 </form>
-
-
+                {players}
 
 
                 {/* <Input  s={12} label="Player name" value={this.state.name} onChange={this.handleChange.bind(this)} id="name" />

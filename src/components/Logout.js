@@ -1,5 +1,7 @@
 import  React, { Component } from 'react';
 import * as firebase from 'firebase';
+import { Route, Link } from 'react-router-dom';
+import Dashboard from '../components/Dashboard';
 
 class Logout extends Component {
 constructor(props) {
@@ -42,7 +44,11 @@ componentWillUnmount() {
     render() {
         let render;
         if(this.state.user) {
-            render = <a className="login" href="/" onClick = {this.signOut}>LOG OUT</a>;
+            render = 
+            <ul>
+            <Link to = {'/dashboard'} className = "header-dashboard"> <a className = "login">DASHBOARD</a> </Link>
+            <a className="login" href="/" onClick = {this.signOut}>LOG OUT</a>
+            </ul>
         } else render = <a className="login" href="login">LOG IN</a>;
         return(
             <div className = "login-boxes">

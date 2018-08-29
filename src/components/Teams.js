@@ -34,8 +34,8 @@ componentDidMount() {
                  console.log(team.key);
                  return (
                 <div className = "team">
-                    <Link to = {'/teams/' + team.key}> <img className = {"sin-team-img" + team.key} src = "../images/sin-team.png" /> </Link>
-                    <img className = {"team-img" + team.key} src="../images/siege.jpg" />
+                    <Link to = {'/teams/' + team.key}> <img className = "sin-team-img" src = {"../images/sin-team.png"} /> </Link>
+                    <img className = "team-img" src={team.teamImage} />
                 </div>
                  )
             })}

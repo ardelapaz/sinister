@@ -35,6 +35,7 @@ componentDidMount() {
         let render;
         if (this.state.user != null) {
          render = <Dashboard /> 
+         //route for whatever path i want
         } else {
             render = <Login />
         }

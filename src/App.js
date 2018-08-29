@@ -25,7 +25,30 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      user: null
   }
+  this.authListener = this.authListener.bind(this);
+}
+
+
+componentDidMount() {
+  this.authListener();
+}
+componentWillUnmount() {
+  this.authListener();
+}
+
+authListener() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    console.log(user);
+    if (user) {
+      this.setState({ user: user });
+    } else {
+      this.setState({ user: null });
+    }
+  }.bind(this));
+}
 
 
   render() {
@@ -49,7 +72,9 @@ class App extends Component {
             <Route path="/contact" component = { Contact } />
             <Route path="/news/:id" component = { Post } />
             <Route path="/teams/:id" component = { Team } />
-            <Route exact path = "/login" component = { Admin } />
+            <Route exact path = "/dashboard" component = { Admin } />
+            <Route exact path = "/login" component = { Login } />
+            
          </main>
 
 

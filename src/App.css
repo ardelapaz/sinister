@@ -100,6 +100,7 @@ a:hover {
 }
 
 a.login {
+  
   height: 40px;
   margin-right: 50px;
   transition: 0.2s ease;
@@ -387,7 +388,7 @@ float: right;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: min-content max-content;
   grid-gap: 25px;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   margin-top: 110px;
 }
@@ -437,20 +438,21 @@ color: red;
   margin: 0 auto;
   height: 300px;
   width: 1000px;
+  margin-bottom: 20px;
 }
 
-.team-imgr6 {
+.team-img {
   height: 100%;
   width: 100%;
 }
-.sin-team-imgr6 {
+.sin-team-img {
   position: absolute;
   opacity: .3;
   height: 300px !important;
   width: 1000px !important;
 }
 
-.sin-team-imgr6:hover {
+.sin-team-img:hover {
   opacity: 1;
 }
 
@@ -482,7 +484,7 @@ color: red;
 height: 100%;
 }
 
-.team-card-name {
+.player-card-name {
   display: inline-block;
   font-family: 'Antic', sans-serif;
   text-transform: uppercase;
@@ -492,11 +494,11 @@ height: 100%;
   border-bottom: 4px solid transparent;
 }
 
-.team-card-name:hover {
+.player-card-name:hover {
   border-bottom: 4px solid red;
 }
 
-.team-card-role {
+.player-card-role {
   font-family: 'Antic', sans-serif;
   text-transform: uppercase;
   color: white;
@@ -550,4 +552,51 @@ height: 100%;
 
 .btn {
   margin-top: 30px;
+}
+
+.nav-tabs {
+  margin-bottom: 50px;
+}
+
+.form-input {
+  margin-bottom: 20px;
+}
+
+.col {
+  height: 400px;
+  width: 1000px;
+
+}
+.news-img {
+  height: 260px;
+  width: 460px;
+}
+.news-title {  
+  font-family: 'Antic', sans-serif;
+  text-transform: uppercase;
+  font-size: 12pt;
+  color: white;
+  transition: 0.2s ease;
+  margin: 0;
+  align-self: flex-start;
+  border-bottom: 4px transparent;
+  margin-left: 100px;
+  margin-top: 15px;
+}
+.news-title:hover {
+  border-bottom: 4px solid red;
+}
+.news-container{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row-reverse;
+  max-height: 300px;
+  width: 900px;
+  min-width: 400px;
+  background-color: #222 !important;
+  border: 1px solid black !important;
+}
+
+.form-control {
+  margin-bottom: 15px
 }

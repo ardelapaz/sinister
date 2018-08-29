@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Col, ControlLabel, FormControl, Button, HelpBlock} from 'react-bootstrap';
 import * as firebase from 'firebase';
 import PlayerForm from '../components/PlayerForm';
+import Team from '../components/Team';
 
 class TeamForm extends Component {
     constructor(props) {
@@ -13,7 +14,10 @@ class TeamForm extends Component {
             readOnly: '',
             submitted: false,
             newTeamKey: '',
-            selectedTeam: ''
+            selectedTeam: 'Select a team', 
+            teamImage: '',
+            players: [],
+            selectedTeamKey: ''
         }
         this.teamsRef = firebase.database().ref('teams');
         this.teams = firebase.database().ref();
@@ -21,12 +25,23 @@ class TeamForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.selectedTeam = this.selectedTeam.bind(this);
+        this.storage = firebase.storage().ref();
+
     }
 
     componentDidMount() {
+        if(this.state.submitted === true) {
+            this.newTeamRef = firebase.database.ref('teams/' + this.state.newTeamKey);
+        }
         if (this.state.submitted === false) {
             this.teamsRef.on('child_added', snapshot => {
                 this.setState({newTeamKey: snapshot.key });
+            });
+        }
+        if(this.newTeamRef) {
+            this.newTeamRef.on('child_added', snapshot => {
+                const newPlayer = snapshot.val();
+                this.setState({ players: this.state.players.concat(newPlayer) });
             });
         }
         this.teamsRef.on('child_added', snapshot => {
@@ -37,7 +52,19 @@ class TeamForm extends Component {
     }
 
     handleChange(e) {
-        this.setState({ teamName: e.target.value });
+        const value = e.target.value;
+        const id = e.target.id;
+        const type = e.target.type;
+        console.log(id);
+
+        if (type == 'file') {
+            var selectedFile = document.getElementById("file").files[0];
+                var fileName = selectedFile.name;
+                this.setState({ image: fileName });
+                this.storageRef = firebase.storage().ref(fileName);
+        } else {
+            this.setState({ teamName: value });
+        }    
     }
     getValidationState() {
         const length = this.state.teamName.length;
@@ -50,8 +77,13 @@ class TeamForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
         if (this.state.submitted == false) {
-            this.teamsRef.push({
-                teamName: this.state.teamName
+            var selectedFile = document.getElementById("file").files[0];
+            const that = this;
+            this.storageRef.put(selectedFile).then((snapshot) => {
+                console.log('Uploaded a file!');
+                that.storage.child(snapshot.metadata.name).getDownloadURL().then((url) => {
+                    that.createTeam(url);
+                });
             });
             this.setState({ readOnly: 'readOnly', submitted: true });
         } else {
@@ -66,31 +98,45 @@ class TeamForm extends Component {
     }
 
     selectedTeam(e) {
+        const that = this;
+        this.state.teams.map((team) => {
+            if(team.teamName === e.target.value) {
+                 that.setState({ selectedTeamKey: team.key });
+                 that.newKey = team.key;
+                 console.log(team.key);
+            }
+        });
         this.setState({ selectedTeam: e.target.value });
+        if (e.target.value === "other") {
+        }
     }
 
-    returnTeamKey() {
-        return this.state.newTeamKey
+    createTeam(url) {
+        this.teamsRef.push({
+            teamName: this.state.teamName,
+            teamImage: url
+        });
+        this.setState({ teamImage: '' });
     }
+
+
 
     render() {
+
         let player;
         if (this.state.submitted === true) {
-            console.log(this.state.newTeamKey);
-            const key = this.state.newTeamKey;
-            player = <PlayerForm key = {this.returnTeamKey.bind(this)} />
+            player = <PlayerForm key1 = {this.state.newTeamKey} />
         }
-        console.log(this.state.selectedTeam);
         let button;
         if (this.state.readOnly === '') {
             button = <FormGroup>
-                <Col smOffset={2} sm={10}>
+                <Col>
                     <Button type="submit" onClick={this.handleSubmit}>Create Team</Button>
                 </Col>
             </FormGroup>
         } else {
             button = <FormGroup>
-            <Col smOffset={2} sm={10}>
+            <Col>
                 <Button type="submit" onClick={this.handleEdit}>Edit team name</Button>
             </Col>
             </FormGroup>
@@ -110,11 +156,22 @@ class TeamForm extends Component {
               onChange={this.handleChange}
             />
             <FormControl.Feedback />
+            <FormControl
+                   id="file"
+                   type="file"
+                   label="File"
+                   help="Example block-level help text here."
+                   onChange={this.handleChange}
+                 />
             <HelpBlock>Team name must be longer than 5 characters</HelpBlock>
+
             {button}
             {player}
           </FormGroup>
+        } else if (this.state.selectedTeam != "other" && this.state.selectedTeam != "Select a team") {
+            team = <Team player = {this.newKey} />
         }
+        
         return (
             <form>
                 <FormGroup controlId="formControlsSelect">
@@ -130,7 +187,7 @@ class TeamForm extends Component {
                     </FormControl>
                  </FormGroup>
                  {team}
-                </form> 
+            </form> 
         )
     }
 }

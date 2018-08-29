@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import News from '../components/News';
 import firebase from '../firebase';
 import Social from '../components/Social'
-import { Col, Card, CardTitle } from 'react-materialize';
 import {Link} from 'react-router-dom';
+import { Thumbnail } from 'react-bootstrap';
 
 
 class NewsList extends Component {
@@ -39,13 +39,23 @@ class NewsList extends Component {
                              this.state.posts.map((post, id) => {
                                  console.log(post.key);
                                  return (
-                                    <Col m={7} s={12} class = "dark gray">
-                                    <Card horizontal header={<CardTitle image={post.image}></CardTitle>} actions={[<Link to = {'/news/' + post.key} className = "read-more">Read More</Link>]}>
-                                        <a href='#'>
-                                            <p>{post.title}</p>
-                                        </a>
-                                      </Card>
-                                  </Col>
+
+                                    <Thumbnail className = "news-container">
+                                    <div className = "test">
+                                        <img className = "news-img" src = {post.image} />
+                                        <a href={"/news/" + post.key} className = "news-title">{post.title}</a>
+                                    </div>
+                                    </Thumbnail>
+
+
+
+                                //     <Col m={7} s={12} class = "dark gray">
+                                //     <Card horizontal header={<CardTitle id = "news-image" image={post.image}></CardTitle>} actions={[<Link to = {'/news/' + post.key} className = "read-more">Read More</Link>]}>
+                                //         <a href='#'>
+                                //             <p>{post.title}</p>
+                                //         </a>
+                                //       </Card>
+                                //   </Col>
                                  )
                             })}
                         </div>
