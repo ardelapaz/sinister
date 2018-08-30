@@ -3,6 +3,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import Create from '../components/Create';
 import CreateTeam from '../components/CreateTeam';
 import EditTeam from '../components/EditTeam';
+import EditPost from '../components/EditPost';
 
 class Dashboard extends Component {
     render() {
@@ -15,7 +16,10 @@ class Dashboard extends Component {
                  <Tab eventKey={2} title="Create a new team">
                  <CreateTeam/>
                 </Tab>
-                <Tab eventKey={3} title="Edit an existing team">
+                <Tab eventKey={3} title="Edit an existing post">
+                 <EditPost/>
+                </Tab>
+                <Tab eventKey={4} title="Edit an existing team">
                  <EditTeam/>
                 </Tab>
                 </Tabs>;
